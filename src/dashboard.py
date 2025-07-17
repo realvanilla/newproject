@@ -398,6 +398,34 @@ def display_source_dashboard(df, cost_df, config):
                 html += f'<td{css_class} style="color: white; {border_bottom_style}">{monetized_val:,}</td>'
         html += '</tr>'
         
+        # Add total not monetized row (websites that are not ACTIVE)
+        not_monetized_df = all_df[all_df['Monetization'] != 'ACTIVE']
+        html += '<tr style="background-color: #7c3d0f;">'
+        for j, col in enumerate(cols):
+            css_class = ""
+            border_bottom_style = "border-bottom: 2px solid #4D9DE0;"
+            
+            if col == 'Yesterday':
+                css_class = ' class="border-left"'
+            elif j > 0 and cols[j-1] == '30 Min':
+                css_class = ' class="border-left"'
+            
+            if col in ['Number', 'Website', 'Monetization', 'Account']:
+                if col == 'Account':
+                    html += f'<td{css_class} style="color: white; {border_bottom_style}">NOT MONETIZED</td>'
+                else:
+                    # No borders for empty columns
+                    if css_class:
+                        css_class = css_class.replace('"', ' no-border"')
+                    else:
+                        css_class = ' class="no-border"'
+                    html += f'<td{css_class}></td>'
+            else:
+                # Sum numeric columns only for non-monetized websites
+                not_monetized_val = not_monetized_df[col].sum() if col in not_monetized_df.columns and not not_monetized_df.empty else 0
+                html += f'<td{css_class} style="color: white; {border_bottom_style}">{not_monetized_val:,}</td>'
+        html += '</tr>'
+        
         # Add individual account breakdown rows (only for ACTIVE monetization websites)
         if not monetized_df.empty:
             # Get unique accounts from monetized websites
