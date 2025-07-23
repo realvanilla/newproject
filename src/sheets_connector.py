@@ -31,7 +31,7 @@ def get_config_from_sheet(sheet_id: str = "1Ud0Jw6JtSs9yBcxWnEJwlBccbDrhNK-zMsg_
                 "status": row[4].strip() if len(row) > 4 else "",  # Column E
                 "monetization": row[5].strip() if len(row) > 5 else "",  # Column F
                 "account": row[6].strip() if len(row) > 1 else "",  # Column G
-                "suffix": row[8] if len(row) > 8 else ""  # Column I
+                "suffix": row[7] if len(row) > 8 else ""  # Column H
             }
             # Filter: suffix not blank AND status = "LIVE"
             if (website.get('suffix') and website.get('suffix').strip() != ''
